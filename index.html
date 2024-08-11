@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Temperature Converter</title>
+    <style>
+      body {
+        background-color: beige;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+      }
+      .converter-box {
+        width: 50%;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      h1 {
+        font-size: 2em;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+      input[type="number"],
+      select,
+      button {
+        margin: 10px 0;
+        padding: 10px;
+        font-size: 1em;
+        width: 60%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .convert-button {
+        background-color: blue;
+        color: white;
+        cursor: pointer;
+      }
+      .convert-button:hover {
+        background-color: darkblue;
+      }
+      .unit-selectors {
+        display: flex;
+        justify-content: space-between;
+        width: 60%;
+        margin: 10px auto;
+      }
+      .unit-selectors select {
+        width: 48%;
+      }
+      .input-unit {
+        background-color: palegoldenrod;
+      }
+      .output-unit {
+        background-color: lightgreen;
+      }
+      .result {
+        margin-top: 20px;
+        padding: 10px;
+        font-size: 1em;
+        width: 60%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="converter-box">
+      <h1>TEMPERATURE CONVERTER</h1>
+      <input
+        type="number"
+        id="temperatureInput"
+        placeholder="Enter temperature"
+        required
+      />
+      <div class="unit-selectors">
+        <select id="inputUnit" class="input-unit">
+          <option value="" disabled selected>Unit of the temperature</option>
+          <option value="celsius">Celsius</option>
+          <option value="fahrenheit">Fahrenheit</option>
+          <option value="kelvin">Kelvin</option>
+        </select>
+        <select id="outputUnit" class="output-unit">
+          <option value="" disabled selected>Unit to be converted in</option>
+          <option value="celsius">Celsius</option>
+          <option value="fahrenheit">Fahrenheit</option>
+          <option value="kelvin">Kelvin</option>
+        </select>
+      </div>
+      <button class="convert-button" onclick="convertTemperature()">
+        Convert
+      </button>
+      <div class="result" id="result"></div>
+    </div>
+
+    <script>
+      function convertTemperature() {
+        const tempInput = document.getElementById("temperatureInput").value;
+        const inputUnit = document.getElementById("inputUnit").value;
+        const outputUnit = document.getElementById("outputUnit").value;
+        const resultElement = document.getElementById("result");
+
+        if (isNaN(tempInput) || tempInput === "") {
+          resultElement.innerHTML = "Please enter a valid number.";
+          return;
+        }
+
+        if (!inputUnit || !outputUnit) {
+          resultElement.innerHTML = "Please select both units.";
+          return;
+        }
+
+        if (inputUnit === outputUnit) {
+          resultElement.innerHTML = "Please select a different unit.";
+          return;
+        }
+
+        let convertedTemp;
+
+        if (inputUnit === "celsius") {
+          if (outputUnit === "fahrenheit") {
+            convertedTemp = (parseFloat(tempInput) * 9) / 5 + 32;
+          } else if (outputUnit === "kelvin") {
+            convertedTemp = parseFloat(tempInput) + 273.15;
+          }
+        } else if (inputUnit === "fahrenheit") {
+          if (outputUnit === "celsius") {
+            convertedTemp = ((parseFloat(tempInput) - 32) * 5) / 9;
+          } else if (outputUnit === "kelvin") {
+            convertedTemp = ((parseFloat(tempInput) - 32) * 5) / 9 + 273.15;
+          }
+        } else if (inputUnit === "kelvin") {
+          if (outputUnit === "celsius") {
+            convertedTemp = parseFloat(tempInput) - 273.15;
+          } else if (outputUnit === "fahrenheit") {
+            convertedTemp = ((parseFloat(tempInput) - 273.15) * 9) / 5 + 32;
+          }
+        }
+
+        resultElement.innerHTML = `Result: ${convertedTemp.toFixed(2)} ${
+          outputUnit.charAt(0).toUpperCase() + outputUnit.slice(1)
+        }`;
+      }
+    </script>
+  </body>
+</html>
